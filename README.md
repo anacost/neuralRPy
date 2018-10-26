@@ -3,7 +3,11 @@ neural network example
 
 
 Two examples of neural network using data to predict net surface radiation.
-One notebook in R using neuralnet. Other in python with tensorflow.
+- One notebook in R using neuralnet:
+[R jupyter notebook](../blob/master/neuralnet_sensitivity_met_data.ipynb)
+
+- Other in python with tensorflow:
+[python jupyter notebook](../blob/master/tensorflowPy.ipynb)
 
 
 Estimating net surface radiation by using ANN
