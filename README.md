@@ -1,4 +1,6 @@
 # neuralRPy
+[![DOI](https://zenodo.org/badge/153755413.svg)](https://zenodo.org/badge/latestdoi/153755413)
+
 neural network example 
 
 
