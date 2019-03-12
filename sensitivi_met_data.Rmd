@@ -1,0 +1,92 @@
+---
+title: "sensitivi_met_data"
+author: "Ana Costa Conrado"
+date: "March 12, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Neural network with neuralnet
+
+```{r installing_packages, echo=FALSE, message=FALSE}
+install.packages(c("neuralnet","GGally", "tidyverse","car"))
+```
+
+```{r loading_packages, echo=FALSE, message=FALSE}
+library(GGally)
+library(tidyverse)
+library(neuralnet)
+library(car)
+```
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r read_data, echo=TRUE}
+sensitivi_met_data<-read.table("data/sensitivity_met_data.txt",header=T)%>%na.omit()
+str(sensitivi_met_data)
+summary(sensitivi_met_data)
+```
+
+## Including a scatterplotMatrix
+
+```{r scatterplotMatrix, echo=TRUE}
+scatterplotMatrix(~Rl_downwell+AT_mbar+RS_downwell+rH+T_b_1477+D_g_1477+F_1_s_g_1477+Rnet,data=sensitivi_met_data,main="Scatterplot with car")
+```
+
+```{r scatteplot_ggpairs, echo=TRUE}
+# with GGally:
+ggpairs(sensitivi_met_data[c(3,4,5,6,7,8,9,10)],title="ANNMaster")
+```
+
+```{r list_images, echo=TRUE}
+images=list.files("../images/",full.names=T)
+images
+names=gsub("[a-zA-Z]|[[:punct:]]"," ",images)
+names
+```
+
+
+```{r rescale, echo=TRUE}
+#rescale
+scale01 <- function(x){
+  (x - min(x)) / (max(x) - min(x))
+}
+sensiti_met_d <- sensiti_met_data[c(3,4,5,6,7,8,9,10)] %>%  mutate_all(scale01)
+# Split into test and train sets
+set.seed(12345)
+#size is the proportion to training
+sensiti_Data_Train <- sample_frac(tbl = sensiti_met_d, replace = FALSE, size = 0.80)  
+sensiti_Data_Test <- anti_join(sensiti_met_d, sensiti_Data_Train)
+```
+
+```{r help_neuralnet, echo=TRUE}
+?neuralnet
+# act.fct = 'logistic' is the sigmoid, 'tanh', default is 'logistic'
+#  linear.output = TRUE is to do regression, default
+# algorithm = "rprop+" is default (resilient backpropagation with weight backtracking)
+```
+
+```{r sigmoid, echo=TRUE}
+# Calculate activation function
+sigmoid <- function(z){1.0/(1.0+exp(-z))}
+# Partial derivative of activation function
+sigmoid_prime <- function(z){sigmoid(z)*(1-sigmoid(z))}
+plot(sigmoid, -100.,100.)
+```
+
+```{r plot1, echo=TRUE}
+#1-hidden layer ANN with 1 neuron, the simplest of all neural networks:
+sensiti_NN1 <- neuralnet(Rnet~Rl_downwell+AT_mbar+Rs_downwell+rH+T_b_1477+D_g_1477+F_1_s_g_1477,
+                         data=sensiti_Data_Train)
+
+plot(sensiti_NN1, rep = 'best')
+# weights learned by the sensiti_NN1 neural network, 
+# and displays the number of iterations before convergence, 
+# as well as the SSE (sum of squared errors) of the training data set.
+```
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
