@@ -22,7 +22,6 @@ library(neuralnet)
 library(car)
 ```
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r read_data, echo=TRUE}
 sensiti_met_data<-read.table("data/sensitivity_met_data.txt",header=T)%>%na.omit()
