@@ -197,34 +197,80 @@ Regression_NN_Errors %>% ggplot(aes(Network, SSE, fill = DataSet)) +
   ggtitle("Regression ANN's SSE")
 ```
 
-```{r plot1, echo=TRUE}
+```{r NN2_, echo=TRUE}
+# to do regression linear.output=TRUE, it is default
+# rep is the repeating the neural network reusing the weights as initial weights
+sensiti_NN2 <- neuralnet(Rnet~Rl_downwell+AT_mbar+Rs_downwell+rH+T_b_1477+D_g_1477+F_1_s_g_1477,
+                         data=sensiti_Data_Train,
+                         hidden = c(4, 1), rep = 10, linear.output=TRUE)
+## Test Error
+Test_NN2_Output <- compute(sensiti_NN2, sensiti_Data_Test[, 1:7])$net.result
+NN2_Test_SSE <- sum((Test_NN2_Output - sensiti_Data_Test[, 8])^2)/2
 
+plot(sensiti_NN2, rep = "best")
 ```
 
-```{r plot1, echo=TRUE}
+# Generalised linear model regression
 
+Now in order to compare with the results of the neural network, we can try a generalised linear model to perform regression.
+
+
+```{r genlinear, echo=TRUE}
+#generalised linear model
+sensiti_met_d <- sensiti_met_data[c(3,4,5,6,7,8,9,10)] # %>%  mutate_all(scale01)
 ```
 
-```{r plot1, echo=TRUE}
+# Split into test and train sets
 
+```{r train_test, echo=TRUE}
+#size is the proportion to training
+sensiti_Data_Train_uns <- sample_frac(tbl = sensiti_met_d, replace = FALSE, size = 0.80)  
+sensiti_Data_Test_uns <- anti_join(sensiti_met_d, sensiti_Data_Train_uns)
 ```
 
-```{r plot1, echo=TRUE}
-
+```{r glin, echo=TRUE}
+lm.fit <- glm(Rnet~., data=sensiti_Data_Train_uns)
+summary(lm.fit)
+pr.lm <- predict(lm.fit,sensiti_Data_Test_uns)
+MSE.lm <- sum((pr.lm - sensiti_Data_Test_uns$Rnet)^2)/nrow(sensiti_Data_Test_uns)
+# mean squared error (MSE) as a measure of how much our predictions are far away from the real data:
+paste("MSE.lm: ", round(MSE.lm, 6))
 ```
 
-```{r plot1, echo=TRUE}
-
+```{r compute, echo=TRUE}
+pr.nn <- compute(sensiti_NN2, sensiti_Data_Test[, 1:7])
+## Test Error
+#Test_NN2_Output <- compute(sensiti_NN2, sensiti_Data_Test[, 1:7])$net.result
+#NN2_Test_SSE <- sum((Test_NN2_Output - sensiti_Data_Test[, 8])^2)/2
 ```
 
-```{r plot1, echo=TRUE}
-
+```{r MSE.nn, echo=TRUE}
+pr.nn_ <- pr.nn$net.result*(max(sensiti_met_data$Rnet)-min(sensiti_met_data$Rnet))+min(sensiti_met_data$Rnet)
+test.r <- (sensiti_Data_Test$Rnet)*(max(sensiti_met_data$Rnet)-min(sensiti_met_data$Rnet))+min(sensiti_met_data$Rnet)
+MSE.nn <- sum((test.r - pr.nn_)^2)/nrow(sensiti_Data_Test)
 ```
 
-```{r plot1, echo=TRUE}
+# compare both MSEs (from generalised linear model and neural network)
 
+```{r print, echo=TRUE}
+print(paste(MSE.lm,MSE.nn))
+MSE.nn < MSE.lm
 ```
 
-```{r plot1, echo=TRUE}
+ Apparently, the net is doing a better work than the linear model at predicting Rnet.
 
+```{r compa, echo=TRUE}
+par(mfrow=c(1,2))
+plot(sensiti_Data_Test_uns$Rnet,pr.nn_,col='red',main='Real vs predicted NN',pch=18,cex=0.7)
+abline(0,1,lwd=2)
+legend('bottomright',legend='NN',pch=18,col='red', bty='n')
+plot(sensiti_Data_Test_uns$Rnet,pr.lm,col='blue',main='Real vs predicted lm',pch=18, cex=0.7)
+abline(0,1,lwd=2)
+legend('bottomright',legend='LM',pch=18,col='blue', bty='n', cex=.95)
+```
+```{r prinT, echo=TRUE}
+plot(sensiti_Data_Test_uns$Rnet,pr.nn_,col='red',main='Real vs predicted NN',pch=18,cex=0.7)
+points(sensiti_Data_Test_uns$Rnet,pr.lm,col='blue',pch=18,cex=0.7)
+abline(0,1,lwd=2)
+legend('bottomright',legend=c('NN','LM'),pch=18,col=c('red','blue'))
 ```
