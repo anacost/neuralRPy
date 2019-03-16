@@ -1,7 +1,7 @@
 ---
 title: "sensitivi_met_data"
 author: "Ana Costa Conrado"
-date: "March 12, 2019"
+date: "October 19, 2018"
 output: html_document
 ---
 
@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Neural network with neuralnet
 
 ```{r installing_packages, echo=TRUE, results='hide', message=FALSE}
-install.packages(c("neuralnet","GGally", "tidyverse","car"))
+install.packages(c("neuralnet","GGally", "tidyverse","car"), repos= "http://cran.rstudio.com/")
 ```
 
 ```{r loading_packages, echo=FALSE, message=FALSE}
@@ -25,20 +25,20 @@ library(car)
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r read_data, echo=TRUE}
-sensitivi_met_data<-read.table("data/sensitivity_met_data.txt",header=T)%>%na.omit()
-str(sensitivi_met_data)
-summary(sensitivi_met_data)
+sensiti_met_data<-read.table("data/sensitivity_met_data.txt",header=T)%>%na.omit()
+str(sensiti_met_data)
+summary(sensiti_met_data)
 ```
 
 ## Including a scatterplotMatrix
 
 ```{r scatterplotMatrix, echo=TRUE}
-scatterplotMatrix(~Rl_downwell+AT_mbar+RS_downwell+rH+T_b_1477+D_g_1477+F_1_s_g_1477+Rnet,data=sensitivi_met_data,main="Scatterplot with car")
+scatterplotMatrix(~Rl_downwell+AT_mbar+Rs_downwell+rH+T_b_1477+D_g_1477+F_1_s_g_1477+Rnet,data=sensiti_met_data,main="Scatterplot with car")
 ```
 
 ```{r scatteplot_ggpairs, echo=TRUE}
 # with GGally:
-ggpairs(sensitivi_met_data[c(3,4,5,6,7,8,9,10)],title="ANNMaster")
+ggpairs(sensiti_met_data[c(3,4,5,6,7,8,9,10)],title="ANNMaster")
 ```
 
 ```{r list_images, echo=TRUE}
