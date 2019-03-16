@@ -131,6 +131,80 @@ plot(sensiti_NN2, rep = 'best')
 plot(sensiti_NN2, rep = 'best')
 ```
 
+```{r cor2, echo=TRUE}
+# cor to calculate the correlation between the two numeric vectors:
+cor(Test_NN2_Output,sensiti_Data_Test[, 8])
+```
+
+```{r gwplot2, echo=TRUE}
+par(mfrow=c(2,2))
+gwplot(sensiti_NN2,selected.covariate="Rl_downwell")
+gwplot(sensiti_NN2,selected.covariate="AT_mbar")
+gwplot(sensiti_NN2,selected.covariate="Rs_downwell")
+gwplot(sensiti_NN2,selected.covariate="rH")
+gwplot(sensiti_NN2,selected.covariate="T_b_1477")
+gwplot(sensiti_NN2,selected.covariate="D_g_1477")
+gwplot(sensiti_NN2,selected.covariate="F_1_s_g_1477")
+```
+
+# 2-Hidden Layers, Layer-1 4-neurons, Layer-2 2-neurons, 1-neuron
+
+```{r sensiti_NN3, echo=TRUE}
+sensiti_NN3 <- neuralnet(Rnet~Rl_downwell+AT_mbar+Rs_downwell+rH+T_b_1477+D_g_1477+F_1_s_g_1477,data=sensiti_Data_Train,
+                         hidden = c(4, 2), linear.output = TRUE)
+```
+
+
+```{r plot3, echo=TRUE}
+## Test Error
+Test_NN3_Output <- compute(sensiti_NN3, sensiti_Data_Test[, 1:7])$net.result
+NN3_Test_SSE <- sum((Test_NN3_Output - sensiti_Data_Test[, 8])^2)/2
+
+plot(sensiti_NN3, rep = 'best')
+```
+
+
+```{r cor3, echo=TRUE}
+# cor to calculate the correlation between the two numeric vectors:
+cor(Test_NN3_Output,sensiti_Data_Test[, 8])
+```
+
+
+```{r gwplot3, echo=TRUE}
+par(mfrow=c(2,2))
+gwplot(sensiti_NN3,selected.covariate="Rl_downwell")
+gwplot(sensiti_NN3,selected.covariate="AT_mbar")
+gwplot(sensiti_NN3,selected.covariate="Rs_downwell")
+gwplot(sensiti_NN3,selected.covariate="rH")
+gwplot(sensiti_NN3,selected.covariate="T_b_1477")
+gwplot(sensiti_NN3,selected.covariate="D_g_1477")
+gwplot(sensiti_NN3,selected.covariate="F_1_s_g_1477")
+```
+
+```{r plot1, echo=TRUE}
+
+```
+
+```{r plot1, echo=TRUE}
+
+```
+
+```{r plot1, echo=TRUE}
+
+```
+
+```{r plot1, echo=TRUE}
+
+```
+
+```{r plot1, echo=TRUE}
+
+```
+
+```{r plot1, echo=TRUE}
+
+```
+
 ```{r plot1, echo=TRUE}
 
 ```
