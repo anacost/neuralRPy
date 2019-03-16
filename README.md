@@ -5,7 +5,7 @@ neural network example
 
 
 Two examples of neural network using data to predict net surface radiation.
-- in [R with neuralnet](http://rpubs.com/celeste1923/476840)
+- in [R with neuralnet](https://github.com/anacost/neuralRPy/blob/master/sensitivi_met_data.pdf)
 
 - Other in python with tensorflow:
 [python jupyter notebook](https://github.com/anacost/neuralRPy/blob/master/tensorflowPy.ipynb)
