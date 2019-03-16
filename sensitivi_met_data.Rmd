@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Neural network with neuralnet
 
-```{r installing_packages, echo=FALSE, message=FALSE}
+```{r installing_packages, echo=TRUE, results='hide', message=FALSE}
 install.packages(c("neuralnet","GGally", "tidyverse","car"))
 ```
 
@@ -88,5 +88,38 @@ plot(sensiti_NN1, rep = 'best')
 # as well as the SSE (sum of squared errors) of the training data set.
 ```
 
+```{r plot1, echo=TRUE}
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```
+
+```{r plot1, echo=TRUE}
+
+```
+
+```{r plot1, echo=TRUE}
+
+```
+
+```{r plot1, echo=TRUE}
+
+```
+
+```{r plot1, echo=TRUE}
+
+```
+
+```{r plot1, echo=TRUE}
+
+```
+
+```{r plot1, echo=TRUE}
+
+```
+
+```{r plot1, echo=TRUE}
+
+```
+
+```{r plot1, echo=TRUE}
+
+```
