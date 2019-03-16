@@ -181,8 +181,20 @@ gwplot(sensiti_NN3,selected.covariate="D_g_1477")
 gwplot(sensiti_NN3,selected.covariate="F_1_s_g_1477")
 ```
 
-```{r plot1, echo=TRUE}
-
+```{r training_error, echo=TRUE}
+# training error
+NN1_Train_SSE <- sensiti_NN1$result.matrix[1]
+NN2_Train_SSE <- sensiti_NN2$result.matrix[1]
+NN3_Train_SSE <- sensiti_NN3$result.matrix[1]
+# Bar plot of results
+Regression_NN_Errors <- tibble(Network = rep(c("NN1", "NN2", "NN3"), each = 2), 
+                               DataSet = rep(c("Train", "Test"), time = 3), 
+                               SSE = c(NN1_Train_SSE, NN1_Test_SSE, 
+                                       NN2_Train_SSE, NN2_Test_SSE, 
+                                       NN3_Train_SSE, NN3_Test_SSE))
+Regression_NN_Errors %>% ggplot(aes(Network, SSE, fill = DataSet)) + 
+  geom_col(position = "dodge") + 
+  ggtitle("Regression ANN's SSE")
 ```
 
 ```{r plot1, echo=TRUE}
