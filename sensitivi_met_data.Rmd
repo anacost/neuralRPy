@@ -257,7 +257,7 @@ print(paste(MSE.lm,MSE.nn))
 MSE.nn < MSE.lm
 ```
 
- Apparently, the net is doing a better work than the linear model at predicting Rnet.
+ Apparently, the neural network is doing a better work than the linear model at predicting Rnet.
 
 ```{r compa, echo=TRUE}
 par(mfrow=c(1,2))
