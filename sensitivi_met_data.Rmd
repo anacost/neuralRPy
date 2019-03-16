@@ -88,28 +88,47 @@ plot(sensiti_NN1, rep = 'best')
 # as well as the SSE (sum of squared errors) of the training data set.
 ```
 
-```{r plot1, echo=TRUE}
-
+```{r gwplot1, echo=TRUE}
+par(mfrow=c(2,2))  # 2 x 2 pictures on one plot
+#gwplot plots the generalized weights for one specific covariate and one response variable
+# visualize the generalized weights:
+gwplot(sensiti_NN1,selected.covariate="Rl_downwell")
+gwplot(sensiti_NN1,selected.covariate="AT_mbar")
+gwplot(sensiti_NN1,selected.covariate="Rs_downwell")
+gwplot(sensiti_NN1,selected.covariate="rH")
+gwplot(sensiti_NN1,selected.covariate="T_b_1477")
+gwplot(sensiti_NN1,selected.covariate="D_g_1477")
+gwplot(sensiti_NN1,selected.covariate="F_1_s_g_1477")
 ```
 
-```{r plot1, echo=TRUE}
-
+```{r NN1_Test_SSE, echo=TRUE}
+Test_NN1_Output <- compute(sensiti_NN1, sensiti_Data_Test[, 1:7])$net.result
+NN1_Test_SSE <- sum((Test_NN1_Output - sensiti_Data_Test[, 8])^2)/2
+NN1_Test_SSE
 ```
 
-```{r plot1, echo=TRUE}
-
+```{r correlation1, echo=TRUE}
+# cor to calculate the correlation between the two numeric vectors:
+cor(Test_NN1_Output, sensiti_Data_Test[, 8])
 ```
 
-```{r plot1, echo=TRUE}
-
+# 2-Hidden Layers, Layer-1 4-neurons, Layer-2, 1-neuron
+```{r sensiti_NN2, echo=TRUE}
+sensiti_NN2 <- neuralnet(Rnet~Rl_downwell+AT_mbar+Rs_downwell+rH+T_b_1477+D_g_1477+F_1_s_g_1477,
+                         data=sensiti_Data_Train,
+                         hidden = c(4, 1))
 ```
 
-```{r plot1, echo=TRUE}
-
+```{r NN2_Test_SSE, echo=TRUE}
+## Test Error
+Test_NN2_Output <- compute(sensiti_NN2, sensiti_Data_Test[, 1:7])$net.result
+NN2_Test_SSE <- sum((Test_NN2_Output - sensiti_Data_Test[, 8])^2)/2
+NN2_Test_SSE
+plot(sensiti_NN2, rep = 'best')
 ```
 
-```{r plot1, echo=TRUE}
-
+```{r plot2, echo=TRUE}
+plot(sensiti_NN2, rep = 'best')
 ```
 
 ```{r plot1, echo=TRUE}
